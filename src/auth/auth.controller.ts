@@ -11,7 +11,12 @@ import { AuthDto } from 'src/dto';
 import { Tokens } from 'src/types';
 import { RtGuard } from 'src/common/guards';
 import { Auth, GetCurrentUser } from 'src/common/decorators';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -19,12 +24,14 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
+  @ApiBody({ type: AuthDto })
   @HttpCode(HttpStatus.CREATED)
   signupLocal(@Body() dto: AuthDto): Promise<Tokens> {
     return this.authService.signupLocal(dto);
   }
 
   @Post('signin')
+  @ApiBody({ type: AuthDto })
   @HttpCode(HttpStatus.OK)
   signinLocal(@Body() dto: AuthDto): Promise<Tokens> {
     return this.authService.signinLocal(dto);
